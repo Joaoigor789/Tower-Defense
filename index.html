@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Defense - Pamela Menezes</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- SignalR Library (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@7.0.0/dist/browser/signalr.min.js"></script>
+</head>
+
+<body>
+    <!-- ========================================
+         TELA DE AUTENTICAÇÃO (Login/Register)
+         ======================================== -->
+    <div id="auth-screen" class="auth-screen">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1>🎮 Tower Defense</h1>
+                <p>Defenda sua base, conquiste o topo!</p>
+            </div>
+
+            <!-- Formulário de Login -->
+            <div id="login-container" class="auth-form-container">
+                <h2>Entrar</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-username">Username ou Email</label>
+                        <input 
+                            type="text" 
+                            id="login-username" 
+                            placeholder="Digite seu username ou email"
+                            required
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Senha</label>
+                        <input 
+                            type="password" 
+                            id="login-password" 
+                            placeholder="Digite sua senha"
+                            required
+                        >
+                    </div>
+                    <div id="login-error" class="error-message"></div>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </form>
+                <p class="auth-toggle">
+                    Não tem uma conta? 
+                    <a href="#" id="show-register">Registre-se</a>
+                </p>
+            </div>
+
+            <!-- Formulário de Registro -->
+            <div id="register-container" class="auth-form-container" style="display: none;">
+                <h2>Registrar</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-username">Username</label>
+                        <input 
+                            type="text" 
+                            id="register-username" 
+                            placeholder="Escolha um username"
+                            required
+                            minlength="3"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input 
+                            type="email" 
+                            id="register-email" 
+                            placeholder="seu@email.com"
+                            required
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Senha</label>
+                        <input 
+                            type="password" 
+                            id="register-password" 
+                            placeholder="Mínimo 6 caracteres"
+                            required
+                            minlength="6"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm-password">Confirmar Senha</label>
+                        <input 
+                            type="password" 
+                            id="register-confirm-password" 
+                            placeholder="Digite a senha novamente"
+                            required
+                        >
+                    </div>
+                    <div id="register-error" class="error-message"></div>
+                    <button type="submit" class="btn btn-primary">Registrar</button>
+                </form>
+                <p class="auth-toggle">
+                    Já tem uma conta? 
+                    <a href="#" id="show-login">Faça login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================
+         TELA DO JOGO
+         ======================================== -->
+    <div id="game-screen" class="game-screen" style="display: none;">
+        <!-- Header com informações do jogador -->
+        <header class="game-header">
+            <div class="user-info">
+                <span class="username">👤 <span id="username-display">Jogador</span></span>
+                <span class="highscore">🏆 Recorde: <span id="highscore-display">0</span></span>
+            </div>
+            <button id="logout-btn" class="btn btn-secondary">Sair</button>
+        </header>
+
+        <!-- Container principal do jogo -->
+        <div class="game-container">
+            <!-- Stats do jogo -->
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">❤️ Vida:</span>
+                    <span id="vida" class="stat-value">100</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">💰 Ouro:</span>
+                    <span id="ouro" class="stat-value">150</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">🌊 Wave:</span>
+                    <span id="wave" class="stat-value">1</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">👾 Inimigos:</span>
+                    <span id="enemies-left" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">⭐ Score:</span>
+                    <span id="current-score" class="stat-value">0</span>
+                </div>
+            </div>
+
+            <button id="start-wave" class="btn btn-primary">Iniciar Wave</button>
+            <button id="show-leaderboard" class="btn btn-secondary">Leaderboard</button>
+        </div>
+
+        <!-- Área do jogo -->
+        <div class="game-area">
+            <div class="map-grid" id="map"></div>
+            <div class="enemies-container"></div>
+            <div class="towers-container"></div>
+            <div class="projectiles-container"></div>
+        </div>
+
+        <!-- Loja de Torres (será populada dinamicamente via API) -->
+        <div class="tower-shop">
+            <h3>🏰 Loja de Torres</h3>
+            <div id="tower-shop-items" class="tower-shop-items">
+                <!-- Torres serão carregadas do backend via Assets API -->
+                <p class="loading">Carregando torres...</p>
+            </div>
+        </div>
+
+        <!-- Modal do Leaderboard -->
+        <div id="leaderboard-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>🏆 Leaderboard - Top 10</h2>
+                    <button class="close-modal" id="close-leaderboard">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="leaderboard-list" class="leaderboard-list">
+                        <p class="loading">Carregando ranking...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/signalr-client.js"></script>
+    <script src="js/game.js"></script>
+
+    <footer>
+        <p>&copy; 2026 Tower Defense - Desenvolvido por Pamela Menezes</p>
+    </footer>
+</body>
+
+</html>
