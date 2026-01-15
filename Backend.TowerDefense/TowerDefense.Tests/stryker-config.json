@@ -1,0 +1,19 @@
+{
+    "stryker-config": {
+        "project": "TowerDefense.Domain.csproj",
+        "test-projects": [
+            "TowerDefense.Tests.csproj"
+        ],
+        "reporters": [
+            "html",
+            "progress"
+        ],
+        "thresholds": {
+            "high": 80,
+            "low": 60,
+            "break": 50
+        },
+        "mutation-level": "standard",
+        "concurrency": 4
+    }
+}

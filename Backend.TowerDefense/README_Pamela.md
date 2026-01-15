@@ -309,16 +309,76 @@ curl http://localhost:5000/health
 
 O projeto inclui `TowerDefense.Tests` com:
 - **xUnit** - Framework de testes
+- **NSubstitute** - Mocking (escolhido ao invés de Moq)
 - **FluentAssertions** - Assertions legíveis
-- **Bogus** - Geração de dados fake
 - **NetArchTest** - Testes de arquitetura
 - **WebApplicationFactory** - Testes de integração
+- **Stryker.NET** - Mutation Testing
 
 **Rodar testes:**
 ```bash
 cd Backend.TowerDefense
 dotnet test
 ```
+
+**Rodar Mutation Testing:**
+```bash
+cd TowerDefense.Tests
+dotnet stryker
+```
+
+### Por Que NSubstitute ao Invés de Moq?
+
+Decidi usar **NSubstitute** porque:
+
+1. **Sintaxe Mais Limpa**: Compare:
+
+```csharp
+// Moq (verboso)
+var mock = new Mock<IPlayerRepository>();
+mock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+    .ReturnsAsync(player);
+var repo = mock.Object;
+
+// NSubstitute (conciso)
+var repo = Substitute.For<IPlayerRepository>();
+repo.GetByIdAsync(Arg.Any<Guid>()).Returns(player);
+```
+
+2. **Menos Boilerplate**: Não preciso de `.Object` ou `new Mock<>()`
+3. **Mais Legível**: `Arg.Any<T>()` vs `It.IsAny<T>()`
+4. **Padrão em Empresas Modernas**: Microsoft, Stack Overflow, JetBrains usam NSubstitute
+
+### O Que É Mutation Testing?
+
+**Mutation Testing** testa a qualidade dos seus testes.
+
+**Como funciona:**
+1. Stryker.NET **muda seu código** de propósito (ex: `>` vira `>=`)
+2. Roda seus testes
+3. Se os testes **não falharem**, significa que o teste é fraco
+
+**Exemplo:**
+```csharp
+// Código original
+if (score > highScore) {
+    highScore = score;
+}
+
+// Stryker muta para:
+if (score >= highScore) { // Mudou > para >=
+    highScore = score;
+}
+
+// Se seus testes não falharem com essa mutação,
+// significa que você não está testando o caso de borda (score == highScore)
+```
+
+**Por que usar:**
+- Identifica testes fracos
+- Garante cobertura real (não apenas % de linhas)
+- Diferencial em code reviews
+- Padrão em empresas de ponta (Nubank, Microsoft)
 
 ---
 
