@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,35 +8,38 @@
     <title>Document</title>
 
 </head>
+
 <body>
     <div class="game-container">
         <div class="stats">
-<div>Vida: <span id="vida">100</span></div>
-<div>Ouro: <span id="ouro">150</span></div>
-<div>Wave: <span id="wave">1</span></div>
-<div>Inimigos: <span id="enemies-left">0</span></div>
+            <div>Vida: <span id="vida">100</span></div>
+            <div>Ouro: <span id="ouro">150</span></div>
+            <div>Wave: <span id="wave">1</span></div>
+            <div>Inimigos: <span id="enemies-left">0</span></div>
         </div>
-
-
-
-
+        <button id="start-wave">Iniciar Wave</button>
     </div>
 
-<header>
+<div class="game-area">
+    <div class="map-grid" id="map"></div>
+<div class="enemies-container"></div>
+<div class="towers-container"></div>
+<div class="projectiles-container"></div>
+    
+<div class="tower-shop">
+<h3>Loja de Torres</h3>
+<div class="tower-item"  datatype="snipper" cost="100">
+    <p>Snipper</p>
+    <p>Custo: 50 Ouro</p>
 
-<nav>
-<ul>
-    <li><a href=""> home </a></li>
-</ul>
 
-</nav>
 
-</header>
+</div>
 
-    <h1>Hello World</h1>
 
     <footer>
         <p>&copy 2026</p>
     </footer>
 </body>
+
 </html>
