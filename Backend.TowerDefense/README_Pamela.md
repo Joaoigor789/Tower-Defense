@@ -203,10 +203,19 @@ A API vai subir em:
 - **GET** `/api/assets/towers` - Listar todas as torres (metadados)
 - **GET** `/api/assets/towers/type/{type}` - Filtrar torres por tipo
 
+### Score
+
+- **POST** `/api/score/update` - Atualizar score do jogador (requer autenticação)
+- **GET** `/api/score/current` - Buscar score atual (requer autenticação)
+
 ### Leaderboard
 
 - **GET** `/api/leaderboard/top10` - Top 10 jogadores
 - **GET** `/api/leaderboard/top/{count}` - Top N jogadores (customizável)
+
+### Health Check
+
+- **GET** `/health` - Verifica status da API e conectividade com PostgreSQL
 
 ### SignalR
 
@@ -215,6 +224,23 @@ A API vai subir em:
 ---
 
 ## 🧪 Testando a API
+
+### Usando o Arquivo .http (Recomendado)
+
+O projeto inclui um arquivo `TowerDefense.API.http` para testes rápidos:
+
+1. Abra `TowerDefense.API/TowerDefense.API.http` no Visual Studio ou VS Code
+2. Clique em "Send Request" em cada bloco
+3. O token JWT é capturado automaticamente após o login
+4. Todos os endpoints subsequentes usam o token automaticamente
+
+**Endpoints disponíveis no arquivo .http:**
+- GET /health
+- POST /api/auth/register
+- POST /api/auth/login (captura token)
+- GET /api/assets/towers
+- POST /api/score/update (usa token)
+- GET /api/leaderboard/top10
 
 ### Usando Swagger UI
 
@@ -258,14 +284,55 @@ curl -X GET http://localhost:5000/api/assets/towers
 
 ---
 
+## 🛡️ Observabilidade
+
+### Health Checks
+
+O endpoint `/health` monitora:
+- ✅ **PostgreSQL** - Conectividade com o banco de dados
+
+**Teste**:
+```bash
+curl http://localhost:5000/health
+```
+
+**Respostas possíveis:**
+- `Healthy` - Sistema funcionando normalmente
+- `Degraded` - Problemas parciais
+- `Unhealthy` - Falhas críticas
+
+---
+
+## 🧪 Suite de Qualidade
+
+### Projeto de Testes
+
+O projeto inclui `TowerDefense.Tests` com:
+- **xUnit** - Framework de testes
+- **FluentAssertions** - Assertions legíveis
+- **Bogus** - Geração de dados fake
+- **NetArchTest** - Testes de arquitetura
+- **WebApplicationFactory** - Testes de integração
+
+**Rodar testes:**
+```bash
+cd Backend.TowerDefense
+dotnet test
+```
+
+---
+
 ## 🎯 Próximos Passos
 
-- [ ] Implementar endpoint para atualizar HighScore
+- [x] Implementar endpoint para atualizar HighScore
+- [x] Adicionar Health Checks (observabilidade)
+- [x] Criar arquivo .http para testes manuais
+- [x] Configurar projeto de testes
+- [ ] Implementar testes automatizados completos
 - [ ] Adicionar sistema de achievements
 - [ ] Implementar matchmaking para multiplayer
 - [ ] Adicionar rate limiting (proteção contra DDoS)
 - [ ] Implementar refresh tokens (JWT de longa duração)
-- [ ] Adicionar testes unitários e de integração
 - [ ] Deploy em Azure/AWS
 
 ---

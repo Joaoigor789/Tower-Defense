@@ -13,7 +13,23 @@ dotnet run
 ```
 
 **API estará disponível em**: `http://localhost:5000`  
-**Swagger (documentação interativa)**: `http://localhost:5000`
+**Swagger (documentação interativa)**: `http://localhost:5000`  
+**Health Check**: `http://localhost:5000/health`
+
+---
+
+## 🛡️ Health Check
+
+**GET** `/health`
+
+Verifica o status da API e conectividade com PostgreSQL.
+
+**Resposta (200 OK)**: `Healthy`
+
+**Uso**:
+```bash
+curl http://localhost:5000/health
+```
 
 ---
 

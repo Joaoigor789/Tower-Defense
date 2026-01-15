@@ -88,7 +88,11 @@ builder.Services.AddControllers();
 // 7. Configurar SignalR
 builder.Services.AddSignalR();
 
-// 8. Configurar Swagger/OpenAPI (documentação automática da API)
+// 8. Health Checks (Observabilidade)
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<ApplicationDbContext>("PostgreSQL");
+
+// 9. Configurar Swagger/OpenAPI (documentação automática da API)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -179,6 +183,9 @@ app.MapControllers();
 
 // 6. Mapear SignalR Hub
 app.MapHub<GameHub>("/hubs/game");
+
+// 7. Health Checks
+app.MapHealthChecks("/health");
 
 // ============================================================================
 // EXECUTAR A APLICAÇÃO

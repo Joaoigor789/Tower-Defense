@@ -1,0 +1,53 @@
+### Health Check
+GET {{baseUrl}}/health
+
+### Register New Player
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "pamela_test",
+  "email": "pamela@test.com",
+  "password": "senha123",
+  "confirmPassword": "senha123"
+}
+
+### Login
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "usernameOrEmail": "pamela_test",
+  "password": "senha123"
+}
+
+### Extract Token
+@token = {{login.response.body.token}}
+
+### Get All Towers
+GET {{baseUrl}}/api/assets/towers
+
+### Get Towers by Type
+GET {{baseUrl}}/api/assets/towers/type/Physical
+
+### Update Score (Requires Auth)
+POST {{baseUrl}}/api/score/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "score": 1500
+}
+
+### Get Current Score
+GET {{baseUrl}}/api/score/current
+Authorization: Bearer {{token}}
+
+### Get Top 10 Leaderboard
+GET {{baseUrl}}/api/leaderboard/top10
+
+### Get Top 50 Leaderboard
+GET {{baseUrl}}/api/leaderboard/top/50
+
+@baseUrl = http://localhost:5000
