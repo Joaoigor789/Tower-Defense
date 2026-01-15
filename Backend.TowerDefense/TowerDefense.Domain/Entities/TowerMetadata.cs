@@ -63,7 +63,6 @@ public class TowerMetadata
     /// </summary>
     public string TowerType { get; private set; }
 
-    // EF Core precisa de um construtor sem parâmetros
     private TowerMetadata() { }
 
     /// <summary>
@@ -87,16 +86,32 @@ public class TowerMetadata
             throw new ArgumentException("Nome da torre não pode ser vazio", nameof(name));
         
         if (damage < 0)
-            throw new ArgumentException("Dano não pode ser negativo", nameof(damage));
-        
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(damage), 
+                "Tower damage cannot be negative.");
+        }
+
         if (range <= 0)
-            throw new ArgumentException("Alcance deve ser maior que zero", nameof(range));
-        
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(range), 
+                "Tower range must be greater than zero. A tower with 0 range is useless.");
+        }
+
         if (attackSpeed <= 0)
-            throw new ArgumentException("Velocidade de ataque deve ser maior que zero", nameof(attackSpeed));
-        
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(attackSpeed), 
+                "Attack speed must be greater than zero.");
+        }
+
         if (cost < 0)
-            throw new ArgumentException("Custo não pode ser negativo", nameof(cost));
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(cost), 
+                "Tower cost cannot be negative.");
+        }
 
         return new TowerMetadata
         {

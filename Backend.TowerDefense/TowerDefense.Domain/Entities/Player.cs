@@ -19,7 +19,6 @@ public class Player
     public DateTime CreatedAt { get; private set; }
     public DateTime? LastLoginAt { get; private set; }
 
-    // EF Core precisa de um construtor sem parâmetros (pode ser private)
     private Player() { }
 
     /// <summary>
@@ -52,13 +51,20 @@ public class Player
     }
 
     /// <summary>
-    /// Atualiza o HighScore do jogador.
-    /// Por que método ao invés de setter público? 
-    /// Porque podemos adicionar regras de negócio (ex: só atualizar se for maior).
+    /// Updates the player's high score if the new score beats the current record.
+    /// We only persist the high score if the new attempt beats the personal best.
     /// </summary>
-    public void UpdateHighScore(int newScore)
+    public void UpdateHighScore(long newScore)
     {
-        // Regra de negócio: só atualiza se o novo score for maior
+        // Guard clause: Scores cannot be negative (prevent malicious input)
+        if (newScore < 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(newScore), 
+                "Score cannot be negative. Attempted value: " + newScore);
+        }
+
+        // Only update if this is a new personal record
         if (newScore > HighScore)
         {
             HighScore = newScore;

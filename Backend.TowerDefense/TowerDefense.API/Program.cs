@@ -16,16 +16,15 @@ var builder = WebApplication.CreateBuilder(args);
 // CONFIGURAÇÃO DE SERVIÇOS (Dependency Injection)
 // ============================================================================
 
-// 1. Configurar DbContext com PostgreSQL
-// Por que PostgreSQL? Porque é robusto, open-source, e tem excelente suporte no .NET.
+// Configuração do banco de dados
+// Usamos Scoped para alinhar o ciclo de vida do Context com o Request HTTP.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' não encontrada");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// 2. Configurar JWT Authentication
-// Por que JWT? Stateless, escalável, e padrão da indústria.
+// Autenticação JWT (stateless, escalável)
 var jwtSecretKey = builder.Configuration["Jwt:SecretKey"]
     ?? throw new InvalidOperationException("Jwt:SecretKey não configurado");
 
@@ -68,27 +67,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-// 3. Registrar Repositories (Scoped = uma instância por request HTTP)
-// Por que Scoped? Porque o DbContext é Scoped, e repositories dependem dele.
+// Repositories (Scoped para alinhar com o DbContext)
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<ITowerMetadataRepository, TowerMetadataRepository>();
 
-// 4. Registrar Services (Application Layer)
+// Services da camada de aplicação
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<LeaderboardService>();
 builder.Services.AddScoped<AssetsService>();
 
-// 5. Registrar JWT Token Generator (Singleton = uma instância para toda a aplicação)
-// Por que Singleton? Porque não tem estado mutável e pode ser reutilizado.
+// JWT Generator (Singleton pois não tem estado mutável)
 builder.Services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
-// 6. Adicionar Controllers
 builder.Services.AddControllers();
-
-// 7. Configurar SignalR
 builder.Services.AddSignalR();
 
-// 8. Health Checks (Observabilidade)
+// Health Checks para monitorar conectividade do PostgreSQL
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<ApplicationDbContext>("PostgreSQL");
 
