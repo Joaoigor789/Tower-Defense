@@ -3,9 +3,9 @@
 O QUE ISSO FAZ: Declara que é um documento HTML5
 POR QUÊ: Necessário para o navegador entender que é HTML moderno
 -->
-<html lang="en">
+<html lang="pt-br">
 <!--
-O QUE ISSO FAZ: Tag raiz do documento, "lang='en'" define idioma inglês
+O QUE ISSO FAZ: Tag raiz do documento, "lang='pt-br'" define idioma português
 SUGESTÃO: Mude para "pt-br" já que é em português
 -->
 <head>
@@ -14,10 +14,10 @@ SUGESTÃO: Mude para "pt-br" já que é em português
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- FAZ: Torna o site responsivo em celulares
         POR QUÊ: Ajusta a escala para diferentes tamanhos de tela -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <!-- Conecta o arquivo CSS que vai estilizar tudo
-        ATENÇÃO: Seu arquivo CSS precisa se chamar "styles.css" -->
-    <title>Document</title>
+        ATENÇÃO: Seu arquivo CSS precisa se chamar "style.css" -->
+    <title>Games</title>
     <!-- Título que aparece na aba do navegador
         SUGESTÃO: Coloque um nome legal tipo "Tower Defense Game" -->
 
@@ -78,19 +78,18 @@ SUGESTÃO: Mude para "pt-br" já que é em português
 <div class="tower-shop">
     
 <h3>Loja de Torres</h3>
-<div class="tower-item"  datatype="snipper" cost="100">
+<div class="tower-item"  data-type="sniper" data-cost="100">
     <!-- 
-            PROBLEMA: Atributos HTML são data-* (com hífen)
             CORREÇÃO: data-type="sniper" data-cost="100"
             
             IMPORTANTE: Esses atributos são lidos pelo JavaScript
             -->
-    <p>Snipper</p>
-    <p>Custo: 50 Ouro</p>
-    <!-- 
-            INCONSISTÊNCIA: Diz custo 50 mas no atributo é 100
-            Decida um valor e mantenha consistente
-            -->
+    <p>Sniper</p>
+    <p>Custo: 100 Ouro</p>
+    <button class="buy-tower">Comprar</button>
+    <!-- Botão para comprar a torre -->
+
+    
     
 
 
