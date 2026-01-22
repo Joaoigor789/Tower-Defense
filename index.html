@@ -1,109 +1,66 @@
 <!DOCTYPE html>
-<!--
-O QUE ISSO FAZ: Declara que é um documento HTML5
-POR QUÊ: Necessário para o navegador entender que é HTML moderno
--->
-<html lang="pt-br">
-<!--
-O QUE ISSO FAZ: Tag raiz do documento, "lang='pt-br'" define idioma português
-SUGESTÃO: Mude para "pt-br" já que é em português
--->
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <!-- Garante que caracteres especiais (ç, á, ã) apareçam corretamente -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- FAZ: Torna o site responsivo em celulares
-        POR QUÊ: Ajusta a escala para diferentes tamanhos de tela -->
-    <link rel="stylesheet" href="style.css">
-    <!-- Conecta o arquivo CSS que vai estilizar tudo
-        ATENÇÃO: Seu arquivo CSS precisa se chamar "style.css" -->
-    <title>Games</title>
-    <!-- Título que aparece na aba do navegador
-        SUGESTÃO: Coloque um nome legal tipo "Tower Defense Game" -->
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tower Defense</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="src/main.js"></script>
 </head>
 
 <body>
-    <!-- DIV principal que envolve todo o jogo -->
-    <div class="game-container">
-        <!--
-        O QUE É: Container principal para organizar o layout
-        COMO USA: No CSS você vai posicionar tudo dentro dele
-        -->
-        <div class="stats">
-            <!-- Div para agrupar todas as estatísticas -->
-            <div>Vida: <span id="vida">100</span></div>
-            <!-- 
-            <span id="vida">: Marcação para o JavaScript alterar
-            O JavaScript vai pegar: document.getElementById('vida')
-            -->
-            <div>Ouro: <span id="ouro">150</span></div>
-            <!-- Mesma lógica - JavaScript atualiza esse número -->
-            <div>Wave: <span id="wave">1</span></div>
-            <!-- Mostra a wave atual -->
-            <div>Inimigos: <span id="enemies-left">0</span></div>
-            <!-- Inimigos restantes na wave -->
+  <div class="app">
+    <header class="topbar">
+      <div class="stats">
+        <div>Vida: <span id="vida">100</span></div>
+        <div>Ouro: <span id="ouro">150</span></div>
+        <div>Wave: <span id="wave">1</span></div>
+        <div>Inimigos: <span id="enemies-left">0</span></div>
+      </div>
+
+      <div class="controls">
+        <button id="start-wave" type="button">Iniciar Wave</button>
+        <button id="pause" type="button">Pausar</button>
+        <div id="status" class="status" aria-live="polite"></div>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="left">
+        <div class="hint">
+          <strong>Como jogar:</strong> escolha uma torre na loja → clique no mapa para colocar (não pode no caminho).
         </div>
-        <button id="start-wave">Iniciar Wave</button>
-        <!--
-        O QUE FAZ: Quando clicado, inicia uma nova wave de inimigos
-        NO JavaScript: document.getElementById('start-wave').addEventListener('click', ...)
-        -->
-    </div>
 
-<div class="game-area">
-    <!-- Área onde o jogo acontece de fato -->
-    <div class="map-grid" id="map"></div>
-    <!--
-        O QUE É: O grid/mapa onde as torres são colocadas
-        COMO FUNCIONA: JavaScript vai criar células (divs) dentro desta
-        EXEMPLO: 10x10 grid de células onde você coloca torres
-        -->
-<div class="enemies-container"></div>
-<!--
-        CONTÊINER DINÂMICO: Inimigos serão criados aqui pelo JavaScript
-        O JavaScript vai adicionar: <div class="enemy"> dentro desta
-        -->
-<div class="towers-container"></div>
-<!--
-        CONTÊINER DINÂMICO: Torres colocadas aparecem aqui
-        JavaScript adiciona: <div class="tower"> quando você compra
-        -->
-<div class="projectiles-container"></div>
-<!--
-        CONTÊINER DINÂMICO: Balas/tiros das torres
-        JavaScript cria: <div class="projectile"> quando uma torre atira
-        -->
-    
-<div class="tower-shop">
-    
-<h3>Loja de Torres</h3>
-<div class="tower-item"  data-type="sniper" data-cost="100">
-    <!-- 
-            CORREÇÃO: data-type="sniper" data-cost="100"
-            
-            IMPORTANTE: Esses atributos são lidos pelo JavaScript
-            -->
-    <p>Sniper</p>
-    <p>Custo: 100 Ouro</p>
-    <button class="buy-tower">Comprar</button>
-    <!-- Botão para comprar a torre -->
+        <div class="game-stage" id="stage">
+          <div class="map-grid" id="map" aria-label="Mapa do jogo"></div>
 
+          <!-- Layers (sobre o grid) -->
+          <div class="layer enemies-container" aria-hidden="true"></div>
+          <div class="layer towers-container" aria-hidden="true"></div>
+          <div class="layer projectiles-container" aria-hidden="true"></div>
+        </div>
+      </section>
 
-    
+      <aside class="right">
+        <div class="panel">
+          <h3>Loja de Torres</h3>
 
+          <button class="tower-item" type="button" data-type="snipper" data-cost="50">
+            <div class="tower-name">Snipper</div>
+            <div class="tower-meta">Custo: <strong>50</strong> Ouro</div>
+            <div class="tower-meta">Alcance alto, dano ok</div>
+          </button>
 
+          <div class="shop-note">
+            <small id="selected-tower">Selecionada: Snipper</small>
+          </div>
+        </div>
 
-</div>
-
-
-    <footer>
-        <p>&copy 2026</p>
-        <!--
-        &copy: Símbolo de copyright ©
-        2026: Ano (você pode colocar xxxx ou deixar dinâmico)
-        -->
-    </footer>
+        <footer class="footer">
+          <p>&copy; 2026</p>
+        </footer>
+      </aside>
+    </main>
+  </div>
 </body>
-
 </html>

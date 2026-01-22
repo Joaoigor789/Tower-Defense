@@ -1,0 +1,203 @@
+:root {
+  --bg: #0f1115;
+  --panel: #161a22;
+  --panel2: #1b2030;
+  --text: #e6e8ef;
+  --muted: #9aa3b2;
+  --accent: #5b8cff;
+  --danger: #ff5b6e;
+  --ok: #47d18c;
+
+  --cell: 48px;
+  --cols: 16;
+  --rows: 9;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+.topbar {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.stats {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  color: var(--muted);
+}
+.stats span { color: var(--text); font-weight: 700; }
+
+.controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+button {
+  background: var(--panel2);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+button:hover { border-color: rgba(255,255,255,0.18); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.status {
+  min-width: 220px;
+  color: var(--muted);
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.left .hint {
+  margin-bottom: 10px;
+  color: var(--muted);
+}
+
+.game-stage {
+  position: relative;
+  width: calc(var(--cols) * var(--cell));
+  height: calc(var(--rows) * var(--cell));
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+}
+
+.map-grid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--cell));
+  grid-template-rows: repeat(var(--rows), var(--cell));
+}
+
+.cell {
+  width: var(--cell);
+  height: var(--cell);
+  border: 1px solid rgba(255,255,255,0.04);
+  background: rgba(0,0,0,0.12);
+}
+.cell:hover {
+  outline: 1px solid rgba(91,140,255,0.35);
+  outline-offset: -1px;
+}
+.cell.path {
+  background: rgba(91, 140, 255, 0.18);
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Entidades */
+.enemy {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #ffce5b;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.25);
+}
+.enemy .hpbar {
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 4px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.enemy .hpfill {
+  height: 100%;
+  width: 100%;
+  background: var(--ok);
+}
+
+.tower {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 10px;
+  background: rgba(71, 209, 140, 0.95);
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.25);
+}
+
+.projectile {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.tower-item {
+  width: 100%;
+  text-align: left;
+  margin-top: 10px;
+  display: grid;
+  gap: 4px;
+}
+.tower-item.selected {
+  outline: 2px solid rgba(91,140,255,0.6);
+}
+
+.tower-name { font-weight: 800; }
+.tower-meta { color: var(--muted); font-size: 13px; }
+
+.shop-note {
+  margin-top: 12px;
+  color: var(--muted);
+}
+
+.footer {
+  margin-top: 14px;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 980px) {
+  .main { grid-template-columns: 1fr; }
+  .game-stage { width: 100%; height: auto; aspect-ratio: 16 / 9; }
+  /* Em telas pequenas, o grid vai esticar; para simplicidade,
+     mantenha desktop como alvo principal por enquanto. */
+}

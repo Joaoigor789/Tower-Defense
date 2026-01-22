@@ -1,0 +1,17 @@
+{
+  "name": "tower-defense",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "npx http-server . -p 8080 --silent",
+    "serve": "npx http-server . -p 8080",
+    "lint": "echo \"Add ESLint if desired\"",
+    "format": "echo \"Add Prettier if desired\"",
+    "test": "vitest",
+    "test:ci": "vitest --run"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0"
+  }
+}
